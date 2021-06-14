@@ -27,6 +27,7 @@ import com.google.idea.blaze.base.model.primitives.WorkspaceRoot;
 import com.google.idea.blaze.base.scope.BlazeContext;
 import com.google.idea.blaze.base.settings.BuildSystem;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.List;
 import javax.annotation.Nullable;
 
@@ -85,7 +86,7 @@ class BlazeInfoRunnerImpl extends BlazeInfoRunner {
       BlazeContext context)
       throws BlazeInfoException {
 
-    boolean isExecutable = ExternalTask.builder().args("which", binaryPath).build().run() == 0;
+    boolean isExecutable = new File(binaryPath).exists();
     if (!isExecutable) {
       BazelBinaryNotFoundNotification.show(binaryPath);
       throw new BlazeInfoException(-1, binaryPath + " cannot be executed");
